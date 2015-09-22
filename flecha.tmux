@@ -42,16 +42,16 @@ apply_theme() {
   # ========== status right
   prefix_right=""
   sufix_right=""
+  # add current weather if wathermajig available
+  if hash weathermajig 2>/dev/null; then
+    prefix_right+="#(weathermajig boulder --short)$separator_left_bold"
+  fi
   # add tmux-mem-cpu-load if it exists
   if hash tmux-mem-cpu-load 2>/dev/null; then
     sufix_right="#(tmux-mem-cpu-load -g 5 --colors --interval 5)#[default]"
   fi
   if hash rainbarf 2>/dev/null; then
     sufix_right+="#(rainbarf --battery --remaining --rgb --bright --skip 5 --bolt)"
-  fi
-  # add current weather if wathermajig available
-  if hash weathermajig 2>/dev/null; then
-    prefix_right+="#(weathermajig boulder --short)$separator_left_bold"
   fi
 
   # show host name and IP address on right side of status bar
