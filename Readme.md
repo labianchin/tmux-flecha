@@ -14,6 +14,7 @@ Inspiration:
 - maglev theme: https://github.com/caiogondim/maglev
 - zanshin tmux.conf: https://github.com/zanshin/dotfiles/blob/master/tmux/tmux.conf
 - gpakosz/.tmux: https://github.com/gpakosz/.tmux
+- powerlevel9k ZSH theme: https://github.com/bhilburn/powerlevel9k
 
 ## Requirements
 
