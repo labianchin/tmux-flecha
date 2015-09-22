@@ -58,13 +58,9 @@ apply_theme() {
   external_ip_fg="brightblue"
   local_ip_fg="red"
   external_ip_config="#[fg=$external_ip_fg]#(curl -m 1 icanhazip.com) "
-  # TODO: still WIP
-  ip_for() {
-    ifconfig "$@" | sed -En 's/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2 /p'
-  }
-  ip_en0_config="#[fg=$local_ip_fg]#(ip_for en0)"
-  ip_en1_config="#[fg=$local_ip_fg]#(ip_for en1)"
-  net_info="${external_ip_config}${ip_en0_config}${ip_en1_config}"
+  ip_en0_config="#[fg=$local_ip_fg]#(ifconfig en0 2>/dev/null | awk '\$1 == \"inet\" { print \$2 }')"
+  ip_en1_config="#[fg=$local_ip_fg]#(ifconfig en1 2>/dev/null | awk '\$1 == \"inet\" { print \$2 }')"
+  net_info="${external_ip_config}${ip_en0_config}${ip_en1_config} "
 
   status_right="${separator_right_bold}#[fg=$session_fg,bg=$session_bg,nobold] ${prefix_right}${net_info}${sufix_right}"
   tmux set-option -g status-right-length 150
