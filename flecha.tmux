@@ -39,6 +39,10 @@ apply_theme() {
   tmux set-option -g status-left-length 60
   tmux set-option -g status-left "$status_left"
 
+  # prefix highlight
+  short_prefix=$( tmux show-option -gqv prefix | tr "[:lower:]" "[:upper:]" | sed 's/C-/\^/')
+  prefix_highlight="#[fg=$default_bg,bg=yellow,bold]#{?client_prefix, $short_prefix ,}"
+
   # ========== status right
   prefix_right=""
   sufix_right=""
@@ -62,7 +66,7 @@ apply_theme() {
   ip_en1_config="#[fg=$local_ip_fg]#(ifconfig en1 2>/dev/null | awk '\$1 == \"inet\" { print \$2 }')"
   net_info="${external_ip_config}${ip_en0_config}${ip_en1_config} "
 
-  status_right="${separator_right_bold}#[fg=$session_fg,bg=$session_bg,nobold] ${prefix_right}${net_info}${sufix_right}"
+  status_right="${separator_right_bold}#[fg=$session_fg,bg=$session_bg,nobold] ${prefix_right}${net_info}${sufix_right}${prefix_highlight}"
   tmux set-option -g status-right-length 150
   tmux set-option -g status-right "$status_right"
 
