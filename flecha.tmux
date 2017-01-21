@@ -10,7 +10,7 @@ tmux set-option -g set-titles-string '#H:#S:#I.#P #W #T'
 
 tmux set-option -g status on              # turn the status bar on
 tmux set-option -g status-utf8 on         # set utf-8 for the status bar
-tmux set-option -g status-interval 5      # set update frequencey (default 15 seconds)
+tmux set-option -g status-interval 10     # set update frequencey (default 15 seconds)
 
 tmux set-window-optio -g monitor-activity on
 tmux set-option -g visual-activity off
@@ -52,7 +52,7 @@ apply_theme() {
   fi
   # add tmux-mem-cpu-load if it exists
   if hash tmux-mem-cpu-load 2>/dev/null; then
-    sufix_right="#(tmux-mem-cpu-load -g 5 --colors --interval 5)#[default]"
+    sufix_right="#(tmux-mem-cpu-load --graph-lines 0 --mem-mode 1 --colors --interval 5 --averages-count 2)#[default]"
   fi
   if hash rainbarf 2>/dev/null; then
     sufix_right+="#(rainbarf --battery --remaining --rgb --bright --skip 5 --bolt)"
@@ -61,10 +61,12 @@ apply_theme() {
   # show host name and IP address on right side of status bar
   external_ip_fg="brightblue"
   local_ip_fg="red"
+  latency_fg="green"
   external_ip_config="#[fg=$external_ip_fg]#(curl -m 1 icanhazip.com) "
+  latency_config="#[fg=$latency_fg]#(ping -c 1 -t 2 8.8.8.8 2>/dev/null | awk 'FNR == 2 { print \$(NF-1) }' | cut -d'=' -f2) "
   ip_en0_config="#[fg=$local_ip_fg]#(ifconfig en0 2>/dev/null | awk '\$1 == \"inet\" { print \$2 }')"
   ip_en1_config="#[fg=$local_ip_fg]#(ifconfig en1 2>/dev/null | awk '\$1 == \"inet\" { print \$2 }')"
-  net_info="${external_ip_config}${ip_en0_config}${ip_en1_config} "
+  net_info="${latency_config}${external_ip_config}" #${ip_en0_config}${ip_en1_config} "
 
   status_right="${separator_right_bold}#[fg=$session_fg,bg=$session_bg,nobold] ${prefix_right}${net_info}${sufix_right}${prefix_highlight}"
   tmux set-option -g status-right-length 150
