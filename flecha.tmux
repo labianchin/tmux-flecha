@@ -82,7 +82,7 @@ apply_theme() {
   tmux set-window-option -g window-status-format "$window_info"
 
   # current window
-  window_status_current_fg=colour16 # black
+  window_status_current_fg=colour0 # black
   window_status_current_bg=colour39 # light blue
   window_status_current_format="#[fg=$window_status_bg,bg=$window_status_current_bg]$separator_left_bold#[fg=$window_status_current_fg,bg=$window_status_current_bg,bold]$window_info#[fg=$window_status_current_bg,bg=$window_status_bg]$separator_left_bold"
   tmux set-window-option -g window-status-current-format "$window_status_current_format"
